@@ -2,7 +2,9 @@
 
 namespace FacturaScripts\Plugins\LoginScreen;
 
+use FacturaScripts\Core\Html;
 use FacturaScripts\Core\Template\InitClass;
+use FacturaScripts\Plugins\LoginScreen\Lib\Html\CssGradientTwig;
 
 class Init extends InitClass
 {
@@ -13,6 +15,10 @@ class Init extends InitClass
     public function init(): void
     {
         $this->loadExtension(new Extension\Controller\EditSettings());
+
+        foreach (CssGradientTwig::getFunctions() as $fn) {
+            Html::addFunction($fn);
+        }
     }
 
     /**
@@ -20,7 +26,6 @@ class Init extends InitClass
      */
     public function uninstall(): void
     {
-        // TODO: Implement uninstall() method.
     }
 
     /**
@@ -28,6 +33,5 @@ class Init extends InitClass
      */
     public function update(): void
     {
-        // TODO: Implement update() method.
     }
 }

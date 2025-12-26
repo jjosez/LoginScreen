@@ -5,9 +5,9 @@ namespace FacturaScripts\Plugins\LoginScreen\Extension\Controller;
 use Closure;
 use Exception;
 use FacturaScripts\Core\Model\AttachedFile;
+use FacturaScripts\Core\Request;
 use FacturaScripts\Core\Tools;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
+use FacturaScripts\Core\UploadedFile;
 
 /**
  * @property Request $request
@@ -26,8 +26,7 @@ class EditSettings
             $faviconID = $request->get('login_favicon_id');
 
             $attachedFavicon = new AttachedFile();
-            if ($attachedFavicon->loadFromCode($faviconID)) {
-
+            if ($attachedFavicon->load($faviconID)) {
                 try {
                     $faviconPath = FS_FOLDER . DIRECTORY_SEPARATOR . $attachedFavicon->path;
                     $assetsPath = FS_FOLDER . DIRECTORY_SEPARATOR . 'Plugins/LoginScreen/Assets/Images/favicon.ico';

@@ -16,7 +16,8 @@
                     {{ _self.loadLogo(idfile) }}
                 </div>
                 <div class="mt-auto text-center">
-                    {{ settings('loginscreen', 'login_footer_content') | raw }}
+                    {% set footer = settings('loginscreen', 'login_footer_content') | raw %}
+                    {{ fixHtml(footer) }}
                 </div>
             </div>
         </div>
@@ -68,18 +69,17 @@
         }
 
         {% set primaryColor =  settings('loginscreen', 'login_primary_color', '#0424AA') %}
-        {% set secondaryColor =  settings('loginscreen', 'login_primary_color', '#0424AA') %}
-        {% set idbackground = settings('loginscreen','login_background_id', 0) %}
+        {% set primaryOpacity =  settings('loginscreen', 'login_primary_opacity', 1)%}
+        {% set secondaryColor =  settings('loginscreen', 'login_secondary_color', '#111C2A') %}
+        {% set secondaryOpacity =  settings('loginscreen', 'login_secondary_opacity', 0.73)%}
+        {% set backgroundId = settings('loginscreen','login_background_id', 0) %}
         #login-sidebar-image {
             background-color: #0424AA;
-            background-image: linear-gradient(to bottom, {{ primaryColor }}, rgba(17, 28, 42, 0.73)),
-            {{ _self.loadBackgroundImage(idbackground) }};
+            background-image: {{ css_linear_gradient(primaryColor, secondaryColor,primaryOpacity, secondaryOpacity) }},{{ _self.backgroundImage(backgroundId) }};
             background-size: cover;
             color: white;
             padding: 20px;
         }
-
-        /*rgba(17, 28, 42, 0.73)),*/
 
         .login-sidebar-text > * {
             color: #FFFFFF;
@@ -105,7 +105,7 @@
     <img src="{{ asset(url) }}" alt="Logo" class="img-fluid">
 {% endmacro loadLogo %}
 
-{% macro loadBackgroundImage(idfile) %}
+{% macro backgroundImage(idfile) %}
     {% if idfile > 0 %}
         {% set attached = attachedFile(idfile) %}
         {% if attached.filename is not empty %}
@@ -114,7 +114,7 @@
     {% endif %}
 
     url({{ asset(url) }})
-{% endmacro loadBackgroundImage %}
+{% endmacro backgroundImage %}
 
 {% macro getBackgroundGradient() %}
     {% set primaryColor =  settings('loginscreen', 'login_primary_color', '#0424AA') %}
